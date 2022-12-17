@@ -1,5 +1,6 @@
 package ru.netology.pages;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.data.DataHelper;
 
@@ -22,6 +23,7 @@ public class PaymentPage {
     private SelenideElement errorNotification = $(".notification_status_error");
     private SelenideElement successButton = successNotification.$("button");
     private SelenideElement errorButton = errorNotification.$("button");
+    private SelenideElement inputInvalid = $(".input__sub");
 
     public PaymentPage() {
         heading.shouldBe(visible);
@@ -58,5 +60,9 @@ public class PaymentPage {
         errorNotification.$("[class=notification__content]").should(text("Ошибка! Банк отказал в проведении операции."));
         errorButton.click();
         errorNotification.should(hidden);
+    }
+
+    public void getInputInvalid(String message) {
+        inputInvalid.shouldBe(visible).shouldHave(text(message));
     }
 }
