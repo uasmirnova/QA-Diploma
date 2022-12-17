@@ -30,10 +30,10 @@ public class PaymentFormTest {
         open("http://localhost:8080/");
     }
 
-    @AfterAll
-    static void tearDown() {
-        cleanDatabase();
-    }
+    //@AfterAll
+    //static void tearDown() {
+        //cleanDatabase();
+    //}
 
     @AfterAll
     public static void tearDownAll() {
@@ -42,7 +42,7 @@ public class PaymentFormTest {
 
     @Epic(value = "Тестирование UI")
     @Feature(value = "Оплата тура с карты")
-    @Story(value = "Позитивный. Покупка тура с карты (с пробелами)")
+    @Story(value = "Позитивный. Покупка тура с действующей карты (номер с пробелами)")
     @Test
     public void shouldValidTestCardApproved() {
         StartPage startPage = new StartPage();
@@ -52,4 +52,42 @@ public class PaymentFormTest {
         paymentPage.getSuccessNotification();
         //assertEquals("APPROVED", DbHelper.getPaymentStatus());
     }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Оплата тура с карты")
+    @Story(value = "Позитивный. Покупка тура с действующей карты (номер без пробелов)")
+    @Test
+    public void shouldValidTestCardApprovedWithoutSpaces() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getValidCardApprovedWithoutSpaces();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getSuccessNotification();
+        //assertEquals("APPROVED", DbHelper.getPaymentStatus());
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Оплата тура с карты")
+    @Story(value = "Позитивный. Покупка тура с недействующей карты (номер с пробелами)")
+    @Test
+    public void shouldValidTestCardDeclined() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getValidCardDeclined();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getErrorNotification();
+        //assertEquals("DECLINED", DbHelper.getPaymentStatus());
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Номер карты 11 цифр")
+    @Test
+    public void shouldNumberField11char() {
+        StartPage startPage = new StartPage();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+         DataHelper.getRandomCard11char();
+
+    }
+
 }

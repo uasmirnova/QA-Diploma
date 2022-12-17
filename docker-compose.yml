@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   node-app:
-    build: ./gate-simulator/
+    build: .artifacts/gate-simulator/
     image: gate-simulator:1.0
     ports:
       - '9999:9999'
