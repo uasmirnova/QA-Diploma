@@ -16,6 +16,8 @@ import ru.netology.pages.PaymentPage;
 import ru.netology.pages.StartPage;
 
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.data.DbHelper.cleanDatabase;
@@ -32,10 +34,10 @@ public class PaymentFormTest {
         open("http://localhost:8080/");
     }
 
-    @AfterAll
-    static void tearDown() {
-        cleanDatabase();
-    }
+    //@AfterAll
+    //static void tearDown() {
+        //cleanDatabase();
+    //}
 
     @AfterAll
     public static void tearDownAll() {
@@ -225,7 +227,282 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Поле обязательно для заполнения");
     }
 
-    
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Год меньше текущего")
+    @Test
+    public void shouldYearFieldLessCurrent() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getInvalidYearLessCurrent();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Истёк срок действия карты");
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Год число 00")
+    @Test
+    public void shouldYearFieldNull() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getYearNull();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Истёк срок действия карты");
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Год в формате 4 числа")
+    @Test
+    public void shouldYearField4char() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getValidYear4char();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getSuccessNotification();
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Год символы")
+    @Test
+    public void shouldYearFieldSymbols() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getInvalidYearSymbols();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверный формат");
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Год пустое")
+    @Test
+    public void shouldYearFieldEmpty() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getYearEmpty();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Поле обязательно для заполнения");
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Владелец с дефисом в середине")
+    @Test
+    public void shouldHolderFieldWithDashMiddle() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getValidHolderWithDashMiddle();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getSuccessNotification();
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Владелец с дефисом в начале")
+    @Test
+    public void shouldHolderFieldWithDashFirst() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getHolderWithDashFirst();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверный формат");
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Владелец с дефисом в конце")
+    @Test
+    public void shouldHolderFieldWithDashEnd() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getHolderWithDashEnd();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверный формат");
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Владелец с пробелом в начале")
+    @Test
+    public void shouldHolderFieldWithSpaceFirst() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getHolderWithSpaceFirst();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверный формат");
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Владелец с пробелом в конце")
+    @Test
+    public void shouldHolderFieldWithSpaceEnd() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getHolderWithSpaceEnd();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверный формат");
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Владелец нижний регистр")
+    @Test
+    public void shouldHolderFieldLowercase() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getHolderLowercase();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getSuccessNotification();
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Владелец символами кириллицы")
+    @Test
+    public void shouldHolderFieldRu() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getHolderRu();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверный формат");
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Владелец латиница + цифры")
+    @Test
+    public void shouldHolderFieldNumbers() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getHolderNumbers();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверный формат");
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Владелец латиница + символы")
+    @Test
+    public void shouldHolderFieldSymbols() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getHolderSymbols();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверный формат");
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Владелец пустое")
+    @Test
+    public void shouldHolderFieldEmpty() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getHolderEmpty();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Поле обязательно для заполнения");
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле CVC/CVV 2 цифры")
+    @Test
+    public void shouldCVCField2char() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getInvalidCvc2char();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверный формат");
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле CVC/CVV 4 цифры")
+    @Test
+    public void shouldCVCField4char() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getInvalidCvc4char();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getSuccessNotification();
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле CVC/CVV символы")
+    @Test
+    public void shouldCVCFieldSymbols() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getInvalidCvcSymbols();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверный формат");
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле CVC/CVV пустое")
+    @Test
+    public void shouldCVCFieldEmpty() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getCvcEmpty();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Поле обязательно для заполнения");
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Все поля пустые")
+    @Test
+    public void shouldAllFieldsEmpty() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getAllEmpty();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        $$("input__top").find(text("Номер карты")).shouldBe(Condition.visible).
+                shouldHave(text("Поле обязательно для заполнения"));
+        $$("input__top").find(text("Месяц")).shouldBe(Condition.visible).
+                shouldHave(text("Поле обязательно для заполнения"));
+        $$("input__top").find(text("Год")).shouldBe(Condition.visible).
+                shouldHave(text("Поле обязательно для заполнения"));
+        $$("input__top").find(text("Владелец")).shouldBe(Condition.visible).
+                shouldHave(text("Поле обязательно для заполнения"));
+        $$("input__top").find(text("CVC/CVV")).shouldBe(Condition.visible).
+                shouldHave(text("Поле обязательно для заполнения"));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
