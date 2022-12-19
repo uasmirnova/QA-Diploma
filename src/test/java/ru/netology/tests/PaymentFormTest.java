@@ -1,6 +1,5 @@
 package ru.netology.tests;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -10,17 +9,16 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.netology.data.DataHelper;
-import ru.netology.data.DbHelper;
+import ru.netology.info.DataHelper;
 import ru.netology.pages.PaymentPage;
 import ru.netology.pages.StartPage;
 
 
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.netology.data.DbHelper.cleanDatabase;
 
 public class PaymentFormTest {
 
@@ -455,7 +453,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Поле обязательно для заполнения");
     }
 
-    @Epic(value = "Тестирование UI")
+    @Epic(value = "Тестирование UI") //BUG
     @Feature(value = "Проверка валидации")
     @Story(value = "Все поля пустые")
     @Test
@@ -464,15 +462,15 @@ public class PaymentFormTest {
         var CardInfo = DataHelper.getAllEmpty();
         PaymentPage paymentPage = startPage.paymentButtonClick();
         paymentPage.inputData(CardInfo);
-        $$("input__top").find(text("Номер карты")).shouldBe(Condition.visible).
+        $(byText("Номер карты")).parent().$(".input__sub").shouldBe(visible).
                 shouldHave(text("Поле обязательно для заполнения"));
-        $$("input__top").find(text("Месяц")).shouldBe(Condition.visible).
+        $(byText("Месяц")).parent().$(".input__sub").shouldBe(visible).
                 shouldHave(text("Поле обязательно для заполнения"));
-        $$("input__top").find(text("Год")).shouldBe(Condition.visible).
+        $(byText("Год")).parent().$(".input__sub").shouldBe(visible).
                 shouldHave(text("Поле обязательно для заполнения"));
-        $$("input__top").find(text("Владелец")).shouldBe(Condition.visible).
+        $(byText("Владелец")).parent().$(".input__sub").shouldBe(visible).
                 shouldHave(text("Поле обязательно для заполнения"));
-        $$("input__top").find(text("CVC/CVV")).shouldBe(Condition.visible).
+        $(byText("CVC/CVV")).parent().$(".input__sub").shouldBe(visible).
                 shouldHave(text("Поле обязательно для заполнения"));
     }
 
