@@ -15,9 +15,7 @@ import ru.netology.data.DbHelper;
 import ru.netology.pages.PaymentPage;
 import ru.netology.pages.StartPage;
 
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
+
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.data.DbHelper.cleanDatabase;
@@ -34,10 +32,10 @@ public class PaymentFormTest {
         open("http://localhost:8080/");
     }
 
-    //@AfterAll
-    //static void tearDown() {
-        //cleanDatabase();
-    //}
+    @AfterAll
+    static void tearDown() {
+        cleanDatabase();
+    }
 
     @AfterAll
     public static void tearDownAll() {
@@ -154,6 +152,88 @@ public class PaymentFormTest {
         paymentPage.inputData(CardInfo);
         paymentPage.getInputInvalid("Поле обязательно для заполнения");
     }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Месяц число больше 12")
+    @Test
+    public void shouldMonthFieldMore12() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getInvalidMonthOver12();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверно указан срок действия карты");
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Месяц число 00")
+    @Test
+    public void shouldMonthFieldNull() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getInvalidMonthNull();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверно указан срок действия карты");
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Месяц 1 число")
+    @Test
+    public void shouldMonthField1char() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getMonth1char();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getSuccessNotification();
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Месяц символы")
+    @Test
+    public void shouldMonthFieldSymbols() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getInvalidMonthSymbols();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверный формат");
+    }
+
+    @Epic(value = "Тестирование UI")
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Месяц меньше текущего при текущем годе")
+    @Test
+    public void shouldMonthFieldLessCurrent() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getInvalidMonthLessCurrent();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Неверно указан срок действия карты");
+    }
+
+    @Epic(value = "Тестирование UI") //BUG
+    @Feature(value = "Проверка валидации")
+    @Story(value = "Поле Месяц пустое")
+    @Test
+    public void shouldMonthFieldEmpty() {
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getMonthEmpty();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getInputInvalid("Поле обязательно для заполнения");
+    }
+
+    
+
+
+
+
+
+
+
+
 
 
 

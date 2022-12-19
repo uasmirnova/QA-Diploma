@@ -3,6 +3,8 @@ package ru.netology.pages;
 import com.codeborne.selenide.SelenideElement;
 import ru.netology.data.DataHelper;
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
@@ -44,7 +46,7 @@ public class CreditPage {
     }
 
     public void getSuccessNotification() {
-        successNotification.waitUntil(visible, 15000);
+        successNotification.should(visible, Duration.ofSeconds(15));
         successNotification.$("[class=notification__title]").should(text("Успешно"));
         successNotification.$("[class=notification__content]").should(text("Операция одобрена Банком."));
         successButton.click();
@@ -52,7 +54,7 @@ public class CreditPage {
     }
 
     public void getErrorNotification() {
-        errorNotification.waitUntil(visible, 15000);
+        errorNotification.should(visible, Duration.ofSeconds(15));
         errorNotification.$("[class=notification__title]").should(text("Ошибка"));
         errorNotification.$("[class=notification__content]").should(text("Ошибка! Банк отказал в проведении операции."));
         errorButton.click();
