@@ -17,32 +17,25 @@ import java.util.List;
 
 public class DbHelper {
 
-    //private static final QueryRunner runner = new QueryRunner();
+    private static final QueryRunner runner = new QueryRunner();
 
     private DbHelper() {
     }
 
-    //@SneakyThrows
-    //private static Connection getConn() {
-        //return DriverManager.getConnection(System.getProperty("db.url"), "app", "pass");
-    //}
+    @SneakyThrows
+    private static Connection getConn() {
+        return DriverManager.getConnection(System.getProperty("db.url"), "app", "pass");
+    }
 
-    private static QueryRunner runner;
-    private static Connection conn;
+    //private static QueryRunner runner;
+    //private static Connection conn;
 
     //@SneakyThrows
-    public static void getConn() throws SQLException {
+    //public static void getConn() {
         //Class.forName("com.mysql.jdbc.Driver");
         //runner = new QueryRunner();
         //conn = DriverManager.getConnection(System.getProperty("db.url"), "app", "pass");
-        var runner = new QueryRunner();
-        try (
-                var conn = DriverManager.getConnection(
-                        System.getProperty("db.url"), "app", "pass"
-                );
-        ) {
-        }
-    }
+    //}
 
     @Data
     @NoArgsConstructor
@@ -80,7 +73,7 @@ public class DbHelper {
         getConn();
         var dbQuery = "SELECT * FROM payment_entity ORDER BY created DESC;";
         ResultSetHandler<List<PaymentEntity>> resultHandler = new BeanListHandler<>(PaymentEntity.class);
-        return runner.query(conn, dbQuery, resultHandler);
+        return runner.query(getConn(), dbQuery, resultHandler);
     }
 
     @SneakyThrows
@@ -88,7 +81,7 @@ public class DbHelper {
         getConn();
         var dbQuery = "SELECT * FROM credit_request_entity ORDER BY created DESC;";
         ResultSetHandler<List<CreditRequestEntity>> resultHandler = new BeanListHandler<>(CreditRequestEntity.class);
-        return runner.query(conn, dbQuery, resultHandler);
+        return runner.query(getConn(), dbQuery, resultHandler);
     }
 
     @SneakyThrows
@@ -96,26 +89,26 @@ public class DbHelper {
         getConn();
         var dbQuery = "SELECT * FROM order_entity ORDER BY created DESC;";
         ResultSetHandler<List<OrderEntity>> resultHandler = new BeanListHandler<>(OrderEntity.class);
-        return runner.query(conn, dbQuery, resultHandler);
+        return runner.query(getConn(), dbQuery, resultHandler);
     }
 
     @SneakyThrows
     public static String getPaymentStatus() {
         getConn();
         var dbStatus = "SELECT status FROM payment_entity;";
-        return runner.query(conn, dbStatus, new ScalarHandler<>());
+        return runner.query(getConn(), dbStatus, new ScalarHandler<>());
     }
 
     @SneakyThrows
     public static String getCreditStatus() {
         getConn();
         var dbStatus = "SELECT status FROM credit_request_entity;";
-        return runner.query(conn, dbStatus, new ScalarHandler<>());
+        return runner.query(getConn(), dbStatus, new ScalarHandler<>());
     }
 
     @SneakyThrows
     public static void cleanDatabase() {
-        getConn();
+        var conn = getConn();
         runner.execute(conn,"DELETE FROM credit_request_entity;");
         runner.execute(conn, "DELETE FROM payment_entity;");
         runner.execute(conn, "DELETE FROM order_entity;");

@@ -19,6 +19,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static ru.netology.info.DbHelper.cleanDatabase;
 
 public class PaymentFormTest {
 
@@ -32,10 +33,10 @@ public class PaymentFormTest {
         open("http://localhost:8080/");
     }
 
-    //@AfterAll
-    //static void tearDown() {
-        //cleanDatabase();
-    //}
+    @AfterAll
+    static void tearDown() {
+        cleanDatabase();
+    }
 
     @AfterAll
     public static void tearDownAll() {
