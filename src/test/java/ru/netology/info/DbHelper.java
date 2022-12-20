@@ -1,5 +1,10 @@
 package ru.netology.info;
 
+import com.google.gson.Gson;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,15 +16,26 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
+
+import static io.restassured.RestAssured.given;
 
 public class DbHelper {
 
     private static final QueryRunner runner = new QueryRunner();
+    private static final Gson gson = new Gson();
+    private static final RequestSpecification spec = new RequestSpecBuilder().setBaseUri("http://localhost").setPort(9999)
+            .setAccept(ContentType.JSON).setContentType(ContentType.JSON).log(LogDetail.ALL).build();
 
     private DbHelper() {
+    }
+
+    public static void getBody(DataHelper.CardInfo cardInfo, String url, int statusCode) {
+        var body = gson.toJson(cardInfo);
+        given().spec(spec).body(body)
+                .when().post(url)
+                .then().statusCode(statusCode);
     }
 
     @SneakyThrows
@@ -103,6 +119,34 @@ public class DbHelper {
     public static String getCreditStatus() {
         getConn();
         var dbStatus = "SELECT status FROM credit_request_entity;";
+        return runner.query(getConn(), dbStatus, new ScalarHandler<>());
+    }
+
+    @SneakyThrows
+    public static String getPaymentID() {
+        getConn();
+        var dbStatus = "SELECT payment_id FROM order_entity;";
+        return runner.query(getConn(), dbStatus, new ScalarHandler<>());
+    }
+
+    @SneakyThrows
+    public static String getCreditID() {
+        getConn();
+        var dbStatus = "SELECT credit_id FROM order_entity;";
+        return runner.query(getConn(), dbStatus, new ScalarHandler<>());
+    }
+
+    @SneakyThrows
+    public static String getBankIDForPayment() {
+        getConn();
+        var dbStatus = "SELECT bank_id FROM payment_entity;";
+        return runner.query(getConn(), dbStatus, new ScalarHandler<>());
+    }
+
+    @SneakyThrows
+    public static String getBankIDForCredit() {
+        getConn();
+        var dbStatus = "SELECT bank_id FROM credit_request_entity;";
         return runner.query(getConn(), dbStatus, new ScalarHandler<>());
     }
 

@@ -34,7 +34,7 @@ public class PaymentFormTest {
     }
 
     @AfterAll
-    static void tearDown() {
+    public static void tearDown() {
         cleanDatabase();
     }
 
