@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import ru.netology.info.DataHelper;
 import ru.netology.info.DbHelper;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,7 +36,7 @@ public class CreditAPITest {
     }
 
     @AfterEach
-    public static void tearDown() {
+    public void tearDown() {
         cleanDatabase();
     }
 

@@ -14,6 +14,8 @@ import ru.netology.pages.CreditPage;
 import ru.netology.pages.PaymentPage;
 import ru.netology.pages.StartPage;
 
+import java.sql.SQLException;
+
 import static com.codeborne.selenide.Selenide.open;
 import static ru.netology.info.DbHelper.cleanDatabase;
 

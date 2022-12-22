@@ -14,6 +14,8 @@ import ru.netology.pages.PaymentPage;
 import ru.netology.pages.StartPage;
 
 
+import java.sql.SQLException;
+
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;

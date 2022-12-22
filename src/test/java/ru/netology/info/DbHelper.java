@@ -5,10 +5,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.SneakyThrows;
+import lombok.*;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
@@ -16,6 +13,7 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -39,7 +37,7 @@ public class DbHelper {
     }
 
     @SneakyThrows
-    private static Connection getConn() {
+    public static Connection getConn() {
         return DriverManager.getConnection(System.getProperty("db.url"), "app", "pass");
     }
 
@@ -83,6 +81,39 @@ public class DbHelper {
         private String credit_id;
         private String payment_id;
     }
+
+//    public static void cleanDatabase() throws SQLException {
+//
+//        val deleteOrderEntity = "DELETE FROM order_entity;";
+//        val deletePaymentEntity = "DELETE FROM payment_entity;";
+//        val deleteCreditRequestEntity = "DELETE FROM credit_request_entity;";
+//        val runner = new QueryRunner();
+//
+//        try (
+//                val conn = DriverManager.getConnection(
+//                        System.getProperty("db.url"), "app", "pass"
+//                );
+//        ) {
+//            runner.update(conn, deleteOrderEntity);
+//            runner.update(conn, deletePaymentEntity);
+//            runner.update(conn, deleteCreditRequestEntity);
+//        }
+//    }
+//
+//    public static List<PaymentEntity> getPayments() throws SQLException {
+//        val dbQuery = "SELECT * FROM payment_entity ORDER BY created DESC;";
+//        val runner = new QueryRunner();
+//        ResultSetHandler<List<PaymentEntity>> resultHandler = new BeanListHandler<>(PaymentEntity.class);
+//        List<PaymentEntity> result;
+//        try (
+//                var conn = DriverManager.getConnection(
+//                        System.getProperty("db.url"), "app", "pass"
+//                );
+//        ) {
+//           result = runner.query(conn, dbQuery, resultHandler);
+//        }
+//        return result;
+//    }
 
     @SneakyThrows
     public static List<PaymentEntity> getPayments() {
