@@ -74,7 +74,7 @@ public class DbHelper {
     @SneakyThrows
     public static List<PaymentEntity> getPayments() {
         getConn();
-        var dbQuery = "SELECT * FROM payment_entity ORDER BY created DESC;";
+        var dbQuery = "SELECT * FROM payment_entity;";
         ResultSetHandler<List<PaymentEntity>> resultHandler = new BeanListHandler<>(PaymentEntity.class);
         return runner.query(getConn(), dbQuery, resultHandler);
     }
@@ -82,7 +82,7 @@ public class DbHelper {
     @SneakyThrows
     public static List<CreditRequestEntity> getCreditRequests() {
         getConn();
-        var dbQuery = "SELECT * FROM credit_request_entity ORDER BY created DESC;";
+        var dbQuery = "SELECT * FROM credit_request_entity;";
         ResultSetHandler<List<CreditRequestEntity>> resultHandler = new BeanListHandler<>(CreditRequestEntity.class);
         return runner.query(getConn(), dbQuery, resultHandler);
     }
@@ -90,7 +90,7 @@ public class DbHelper {
     @SneakyThrows
     public static List<OrderEntity> getOrders() {
         getConn();
-        var dbQuery = "SELECT * FROM order_entity ORDER BY created DESC;";
+        var dbQuery = "SELECT * FROM order_entity;";
         ResultSetHandler<List<OrderEntity>> resultHandler = new BeanListHandler<>(OrderEntity.class);
         return runner.query(getConn(), dbQuery, resultHandler);
     }

@@ -49,7 +49,7 @@ public class CreditAPITest {
 
     @Epic(value = "Тестирование API")
     @Feature(value = "Тур в кредит с карты")
-    @Story(value = "Позитивный. Тур в кредит с действующей карты, создание записи в таблице payment_entity")
+    @Story(value = "Позитивный. Тур в кредит с действующей карты, создание записи в таблице credit_request_entity")
     @Test
     public void shouldValidTestCreditCardApprovedEntityAdded() {
         var cardInfo = DataHelper.getValidCardApproved();
@@ -77,7 +77,7 @@ public class CreditAPITest {
 
     @Epic(value = "Тестирование API")
     @Feature(value = "Тур в кредит с карты")
-    @Story(value = "Позитивный. Тур в кредит с недействующей карты, создание записи в таблице payment_entity")
+    @Story(value = "Позитивный. Тур в кредит с недействующей карты, создание записи в таблице credit_request_entity")
     @Test
     public void shouldValidTestCreditCardDeclinedEntityAdded() {
         var cardInfo = DataHelper.getValidCardDeclined();
@@ -201,7 +201,7 @@ public class CreditAPITest {
 
     @Epic(value = "Обращение к БД через форму орплаты")
     @Feature(value = "Тур в кредит с карты")
-    @Story(value = "Тур в кредит с действующей карты(ввод данных через форму), создание записи в таблице payment_entity")
+    @Story(value = "Тур в кредит с действующей карты(ввод данных через форму), создание записи в таблице credit_request_entity")
     @Test
     public void shouldValidTestFormCreditCardApprovedEntityAdded() {
         open("http://localhost:8080/");
@@ -218,7 +218,7 @@ public class CreditAPITest {
 
     @Epic(value = "Обращение к БД через форму орплаты")
     @Feature(value = "Тур в кредит с карты")
-    @Story(value = "Тур в кредит с недействующей карты(ввод данных через форму), создание записи в таблице payment_entity")
+    @Story(value = "Тур в кредит с недействующей карты(ввод данных через форму), создание записи в таблице credit_request_entity")
     @Test
     public void shouldValidTestFormCreditCardDeclinedEntityAdded() {
         open("http://localhost:8080/");
