@@ -13,7 +13,6 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -38,18 +37,8 @@ public class DbHelper {
 
     @SneakyThrows
     public static Connection getConn() {
-        return DriverManager.getConnection(System.getProperty("db.url"), "app", "pass");
+        return DriverManager.getConnection(System.getProperty("dbUrl"), "app", "pass");
     }
-
-    //private static QueryRunner runner;
-    //private static Connection conn;
-
-    //@SneakyThrows
-    //public static void getConn() {
-        //Class.forName("com.mysql.jdbc.Driver");
-        //runner = new QueryRunner();
-        //conn = DriverManager.getConnection(System.getProperty("db.url"), "app", "pass");
-    //}
 
     @Data
     @NoArgsConstructor
@@ -81,39 +70,6 @@ public class DbHelper {
         private String credit_id;
         private String payment_id;
     }
-
-//    public static void cleanDatabase() throws SQLException {
-//
-//        val deleteOrderEntity = "DELETE FROM order_entity;";
-//        val deletePaymentEntity = "DELETE FROM payment_entity;";
-//        val deleteCreditRequestEntity = "DELETE FROM credit_request_entity;";
-//        val runner = new QueryRunner();
-//
-//        try (
-//                val conn = DriverManager.getConnection(
-//                        System.getProperty("db.url"), "app", "pass"
-//                );
-//        ) {
-//            runner.update(conn, deleteOrderEntity);
-//            runner.update(conn, deletePaymentEntity);
-//            runner.update(conn, deleteCreditRequestEntity);
-//        }
-//    }
-//
-//    public static List<PaymentEntity> getPayments() throws SQLException {
-//        val dbQuery = "SELECT * FROM payment_entity ORDER BY created DESC;";
-//        val runner = new QueryRunner();
-//        ResultSetHandler<List<PaymentEntity>> resultHandler = new BeanListHandler<>(PaymentEntity.class);
-//        List<PaymentEntity> result;
-//        try (
-//                var conn = DriverManager.getConnection(
-//                        System.getProperty("db.url"), "app", "pass"
-//                );
-//        ) {
-//           result = runner.query(conn, dbQuery, resultHandler);
-//        }
-//        return result;
-//    }
 
     @SneakyThrows
     public static List<PaymentEntity> getPayments() {

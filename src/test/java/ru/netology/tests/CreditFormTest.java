@@ -10,13 +10,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.info.DataHelper;
+import ru.netology.info.DbHelper;
 import ru.netology.pages.CreditPage;
-import ru.netology.pages.PaymentPage;
 import ru.netology.pages.StartPage;
 
-import java.sql.SQLException;
-
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.info.DbHelper.cleanDatabase;
 
 public class CreditFormTest {
@@ -51,7 +50,7 @@ public class CreditFormTest {
         CreditPage creditPage = startPage.creditButtonClick();
         creditPage.inputData(CardInfo);
         creditPage.getSuccessNotification();
-        //assertEquals("APPROVED", DbHelper.getCreditStatus());
+        assertEquals("APPROVED", DbHelper.getCreditStatus());
     }
 
     @Epic(value = "Тестирование UI")
@@ -64,7 +63,7 @@ public class CreditFormTest {
         CreditPage creditPage = startPage.creditButtonClick();
         creditPage.inputData(CardInfo);
         creditPage.getSuccessNotification();
-        //assertEquals("APPROVED", DbHelper.getCreditStatus());
+        assertEquals("APPROVED", DbHelper.getCreditStatus());
     }
 
     @Epic(value = "Тестирование UI")
@@ -77,6 +76,6 @@ public class CreditFormTest {
         CreditPage creditPage = startPage.creditButtonClick();
         creditPage.inputData(CardInfo);
         creditPage.getErrorNotification();
-        //assertEquals("DECLINED", DbHelper.getCreditStatus());
+        assertEquals("DECLINED", DbHelper.getCreditStatus());
     }
 }

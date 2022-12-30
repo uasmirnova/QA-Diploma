@@ -33,7 +33,7 @@ for:
 
     build_script:
       - chmod +x gradlew
-      - ./gradlew test --info -Dselenide.headless=true -Ddb.url=jdbc:mysql://localhost:3306/app
+      - ./gradlew test --info -Dselenide.headless=true -DdbUrl=jdbc:mysql://localhost:3306/app
       - sudo docker-compose down
 
   - matrix:
@@ -50,7 +50,7 @@ for:
 
     build_script:
       - chmod +x gradlew
-      - ./gradlew test --info -Dselenide.headless=true -Ddb.url=jdbc:postgresql://localhost:5432/app
+      - ./gradlew test --info -Dselenide.headless=true -DdbUrl=jdbc:postgresql://localhost:5432/app
       - sudo docker-compose down
 
 

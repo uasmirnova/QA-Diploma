@@ -11,9 +11,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.netology.info.DataHelper;
 import ru.netology.info.DbHelper;
+import ru.netology.pages.PaymentPage;
+import ru.netology.pages.StartPage;
 
 import java.util.List;
 
+import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.info.DbHelper.cleanDatabase;
 
@@ -35,7 +38,7 @@ public class PaymentAPITest {
     }
 
     @AfterEach
-    public static void tearDown() {
+    public void tearDown() {
         cleanDatabase();
     }
 
@@ -194,5 +197,39 @@ public class PaymentAPITest {
         assertEquals(0, payments.size());
         assertEquals(0, credits.size());
         assertEquals(0, orders.size());
+    }
+
+    @Epic(value = "Обращение к БД через форму оплаты")
+    @Feature(value = "Оплата тура с карты")
+    @Story(value = "Покупка тура с действующей карты(ввод данных через форму), создание записи в таблице payment_entity")
+    @Test
+    public void shouldValidFormTestCardApprovedEntityAdded() {
+        open("http://localhost:8080/");
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getValidCardApproved();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getSuccessNotification();
+
+        assertEquals(1, payments.size());
+        assertEquals(0, credits.size());
+        assertEquals("APPROVED", DbHelper.getPaymentStatus());
+    }
+
+    @Epic(value = "Обращение к БД через форму оплаты")
+    @Feature(value = "Оплата тура с карты")
+    @Story(value = "Покупка тура с недействующей карты(ввод данных через форму), создание записи в таблице payment_entity")
+    @Test
+    public void shouldValidFormTestCardDeclinedEntityAdded() {
+        open("http://localhost:8080/");
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getValidCardDeclined();
+        PaymentPage paymentPage = startPage.paymentButtonClick();
+        paymentPage.inputData(CardInfo);
+        paymentPage.getErrorNotification();
+
+        assertEquals(1, payments.size());
+        assertEquals(0, credits.size());
+        assertEquals("DECLINED", DbHelper.getPaymentStatus());
     }
 }

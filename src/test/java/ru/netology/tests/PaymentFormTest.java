@@ -10,11 +10,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.info.DataHelper;
+import ru.netology.info.DbHelper;
 import ru.netology.pages.PaymentPage;
 import ru.netology.pages.StartPage;
-
-
-import java.sql.SQLException;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -55,7 +53,7 @@ public class PaymentFormTest {
         PaymentPage paymentPage = startPage.paymentButtonClick();
         paymentPage.inputData(CardInfo);
         paymentPage.getSuccessNotification();
-        //assertEquals("APPROVED", DbHelper.getPaymentStatus());
+        assertEquals("APPROVED", DbHelper.getPaymentStatus());
     }
 
     @Epic(value = "Тестирование UI")
@@ -68,10 +66,10 @@ public class PaymentFormTest {
         PaymentPage paymentPage = startPage.paymentButtonClick();
         paymentPage.inputData(CardInfo);
         paymentPage.getSuccessNotification();
-        //assertEquals("APPROVED", DbHelper.getPaymentStatus());
+        assertEquals("APPROVED", DbHelper.getPaymentStatus());
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Оплата тура с карты")
     @Story(value = "Позитивный. Покупка тура с недействующей карты (номер с пробелами)")
     @Test
@@ -81,7 +79,7 @@ public class PaymentFormTest {
         PaymentPage paymentPage = startPage.paymentButtonClick();
         paymentPage.inputData(CardInfo);
         paymentPage.getErrorNotification();
-        //assertEquals("DECLINED", DbHelper.getPaymentStatus());
+        assertEquals("DECLINED", DbHelper.getPaymentStatus());
     }
 
     @Epic(value = "Тестирование UI")
@@ -108,7 +106,7 @@ public class PaymentFormTest {
         paymentPage.getErrorNotification();
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Номер карты 19 случайных цифр")
     @Test
@@ -144,7 +142,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Неверный формат");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Номер карты пустое")
     @Test
@@ -168,7 +166,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Неверно указан срок действия карты");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Месяц число 00")
     @Test
@@ -180,7 +178,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Неверно указан срок действия карты");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Месяц 1 число")
     @Test
@@ -216,7 +214,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Неверно указан срок действия карты");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Месяц пустое")
     @Test
@@ -252,7 +250,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Истёк срок действия карты");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Год в формате 4 числа")
     @Test
@@ -276,7 +274,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Неверный формат");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Год пустое")
     @Test
@@ -300,7 +298,7 @@ public class PaymentFormTest {
         paymentPage.getSuccessNotification();
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Владелец с дефисом в начале")
     @Test
@@ -312,7 +310,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Неверный формат");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Владелец с дефисом в конце")
     @Test
@@ -324,7 +322,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Неверный формат");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Владелец с пробелом в начале")
     @Test
@@ -336,7 +334,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Неверный формат");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Владелец с пробелом в конце")
     @Test
@@ -360,7 +358,7 @@ public class PaymentFormTest {
         paymentPage.getSuccessNotification();
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Владелец символами кириллицы")
     @Test
@@ -372,7 +370,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Неверный формат");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Владелец латиница + цифры")
     @Test
@@ -384,7 +382,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Неверный формат");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Владелец латиница + символы")
     @Test
@@ -396,7 +394,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Неверный формат");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Поле Владелец пустое")
     @Test
@@ -456,7 +454,7 @@ public class PaymentFormTest {
         paymentPage.getInputInvalid("Поле обязательно для заполнения");
     }
 
-    @Epic(value = "Тестирование UI") //BUG
+    @Epic(value = "Тестирование UI")
     @Feature(value = "Проверка валидации")
     @Story(value = "Все поля пустые")
     @Test

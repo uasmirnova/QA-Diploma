@@ -11,10 +11,12 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.netology.info.DataHelper;
 import ru.netology.info.DbHelper;
+import ru.netology.pages.CreditPage;
+import ru.netology.pages.StartPage;
 
-import java.sql.SQLException;
 import java.util.List;
 
+import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static ru.netology.info.DbHelper.cleanDatabase;
 
@@ -195,6 +197,40 @@ public class CreditAPITest {
         assertEquals(0, payments.size());
         assertEquals(0, credits.size());
         assertEquals(0, orders.size());
+    }
+
+    @Epic(value = "Обращение к БД через форму орплаты")
+    @Feature(value = "Тур в кредит с карты")
+    @Story(value = "Тур в кредит с действующей карты(ввод данных через форму), создание записи в таблице payment_entity")
+    @Test
+    public void shouldValidTestFormCreditCardApprovedEntityAdded() {
+        open("http://localhost:8080/");
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getValidCardApproved();
+        CreditPage creditPage = startPage.creditButtonClick();
+        creditPage.inputData(CardInfo);
+        creditPage.getSuccessNotification();
+
+        assertEquals(0, payments.size());
+        assertEquals(1, credits.size());
+        assertEquals("APPROVED", DbHelper.getCreditStatus());
+    }
+
+    @Epic(value = "Обращение к БД через форму орплаты")
+    @Feature(value = "Тур в кредит с карты")
+    @Story(value = "Тур в кредит с недействующей карты(ввод данных через форму), создание записи в таблице payment_entity")
+    @Test
+    public void shouldValidTestFormCreditCardDeclinedEntityAdded() {
+        open("http://localhost:8080/");
+        StartPage startPage = new StartPage();
+        var CardInfo = DataHelper.getValidCardDeclined();
+        CreditPage creditPage = startPage.creditButtonClick();
+        creditPage.inputData(CardInfo);
+        creditPage.getErrorNotification();
+
+        assertEquals(0, payments.size());
+        assertEquals(1, credits.size());
+        assertEquals("DECLINED", DbHelper.getCreditStatus());
     }
 }
 
